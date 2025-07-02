@@ -1,0 +1,31 @@
+explainer_task:
+  description: >
+    You are provided with a news item containing the following fields:
+
+    • Title: {title}
+    • Description: {description}
+    • Content: {content}
+
+    Your task is to generate a clear and informative summary of the article based strictly on these inputs.
+
+    Guidelines:
+    1. Use only the provided fields—do not retrieve or assume any external information.
+    2. If description and content are missing or insufficient, rely on your internal understanding of the title.
+    3. Write a well-structured summary consisting of exactly 8 to 10 complete sentences.
+    4. Paraphrase and reorganize the input; do not copy or echo it verbatim.
+    5. Ensure the summary is coherent, factual, and easy to understand for a general audience.
+
+  expected_output: >
+    A clean, 8–10 sentence summary of the news article written entirely from the provided inputs.
+
+    Do NOT:
+    - Include tool output, internal thoughts, or reasoning.
+    - Write confirmation phrases such as:
+      - "I now can give a great answer"
+      - "Here's your summary"
+      - "This is the cleaned version"
+      - "I can now proceed"
+    - Echo the input text verbatim.
+
+    Only return the final summary as clear, complete sentences ready for display.
+  agent: explainer_agent
