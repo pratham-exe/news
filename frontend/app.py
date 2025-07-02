@@ -29,7 +29,13 @@ with categories:
             )
             category_top_headlines = json.loads(category_news.content.decode("utf-8"))
             for each in category_top_headlines:
-                st.markdown(each, unsafe_allow_html=True)
+                st.subheader(each)
+                with st.expander("Read more"):
+                    read_more = rq.post(
+                        f"http://localhost:8000/get-detailed-explanation/{each}"
+                    )
+                    result = json.loads(read_more.content.decode("utf-8"))
+                    st.write(result)
 
 with user_query:
     user_query_news = st.text_input("Ask me anything")
@@ -42,4 +48,10 @@ with user_query:
             )
             query_top_headlines = json.loads(query_news.content.decode("utf-8"))
             for each in query_top_headlines:
-                st.markdown(each, unsafe_allow_html=True)
+                st.subheader(each)
+                with st.expander("Read more"):
+                    read_more = rq.post(
+                        f"http://localhost:8000/get-detailed-explanation/{each}"
+                    )
+                    result = json.loads(read_more.content.decode("utf-8"))
+                    st.write(result)
