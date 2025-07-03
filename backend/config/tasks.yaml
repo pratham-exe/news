@@ -14,9 +14,12 @@ explainer_task:
     3. Write a well-structured summary consisting of exactly 8 to 10 complete sentences.
     4. Paraphrase and reorganize the input; do not copy or echo it verbatim.
     5. Ensure the summary is coherent, factual, and easy to understand for a general audience.
+    6. Adopt the tone of a professional news reporter delivering the information directly to an audience.
+       Avoid saying "the article says" or "the article discusses"—instead, present the information as if you
+       are reporting it live.
 
   expected_output: >
-    A clean, 8–10 sentence summary of the news article written entirely from the provided inputs.
+    A clean, 8–10 sentence news report-style summary, written entirely from the provided inputs.
 
     Do NOT:
     - Include tool output, internal thoughts, or reasoning.
@@ -26,6 +29,7 @@ explainer_task:
       - "This is the cleaned version"
       - "I can now proceed"
     - Echo the input text verbatim.
+    - Refer to the source as "the article" or "this piece".
 
-    Only return the final summary as clear, complete sentences ready for display.
+    Only return the final news-style summary in complete, professional sentences—ready for display or broadcast.
   agent: explainer_agent

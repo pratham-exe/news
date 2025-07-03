@@ -64,8 +64,8 @@ def get_detailed_explanation_crew_ai(read_more):
                 "content": "No content available",
             }
         )
-        return result.raw
-    title, description, content, _ = article
+        return [result.raw]
+    title, description, content, image_url = article
     result = crew_test().kickoff(
         inputs={
             "title": title,
@@ -73,4 +73,4 @@ def get_detailed_explanation_crew_ai(read_more):
             "content": content,
         }
     )
-    return result.raw
+    return [result.raw, image_url]

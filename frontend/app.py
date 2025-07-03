@@ -1,7 +1,9 @@
 import json
+from io import BytesIO
 
 import requests as rq
 import streamlit as st
+from PIL import Image
 
 st.title("News Reporter Agent")
 
@@ -35,7 +37,14 @@ with categories:
                         f"http://localhost:8000/get-detailed-explanation/{each}"
                     )
                     result = json.loads(read_more.content.decode("utf-8"))
-                    st.write(result)
+                    if len(result) == 2:
+                        try:
+                            response = rq.get(result[1], timeout=10)
+                            image = Image.open(BytesIO(response.content))
+                            st.image(image)
+                        except Exception as e:
+                            print(e)
+                    st.write(result[0])
 
 with user_query:
     user_query_news = st.text_input("Ask me anything")
@@ -54,4 +63,11 @@ with user_query:
                         f"http://localhost:8000/get-detailed-explanation/{each}"
                     )
                     result = json.loads(read_more.content.decode("utf-8"))
-                    st.write(result)
+                    if len(result) == 2:
+                        try:
+                            response = rq.get(result[1], timeout=10)
+                            image = Image.open(BytesIO(response.content))
+                            st.image(image)
+                        except Exception as e:
+                            print(e)
+                    st.write(result[0])
