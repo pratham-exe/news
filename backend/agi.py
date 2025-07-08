@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
+import os
 import sys
 
+import whisper
+from dotenv import load_dotenv
 
-def agi_write(cmd):
+load_dotenv()
+
+RECORD_PATH = os.getenv("RECORD_PATH")
+
+
+def agi(cmd):
     sys.stdout.write(cmd + "\n")
     sys.stdout.flush()
-    response = sys.stdin.readline().strip()
-    return response
+    return sys.stdin.readline().strip()
 
 
 def read_agi_env():
@@ -16,9 +23,40 @@ def read_agi_env():
             break
 
 
-if __name__ == "__main__":
+def log(msg):
+    agi(f'VERBOSE "{msg}" 3')
+
+
+def main():
     read_agi_env()
 
-    agi_write("ANSWER")
-    agi_write('STREAM FILE goodbye ""')
-    agi_write("HANGUP")
+    agi("ANSWER")
+    agi('STREAM FILE beep ""')
+
+    agi(f'RECORD FILE {RECORD_PATH[:-4]} wav "#" 3600000')
+
+    if not os.path.exists(RECORD_PATH):
+        log(f"Recording not found at: {RECORD_PATH}")
+    else:
+        try:
+            log("Loading Whisper model (base)...")
+            model = whisper.load_model("base")
+            log("Starting transcription...")
+
+            result = model.transcribe(RECORD_PATH)
+            transcript = result.get("text", "")
+
+            if transcript:
+                log(f"Transcription: {transcript}")
+            else:
+                log("Transcription empty or no speech detected.")
+
+        except Exception as e:
+            log(f"Whisper error: {e}")
+
+    agi('STREAM FILE goodbye ""')
+    agi("HANGUP")
+
+
+if __name__ == "__main__":
+    main()
