@@ -33,3 +33,33 @@ explainer_task:
 
     Only return the final news-style summary in complete, professional sentences—ready for display or broadcast.
   agent: explainer_agent
+
+keyword_extractor_task:
+  description: >
+    You are provided with a user query intended to search for relevant news articles.
+
+    Your task is to extract the most meaningful keywords from the query to improve search accuracy 
+    when interacting with a news API or database.
+
+    Guidelines:
+    1. Do NOT rephrase or summarize the query—your job is only to extract keywords.
+    2. Remove all stop words, filler phrases, and general-purpose verbs.
+    3. Retain proper nouns, entities, topic-specific nouns, and crucial modifiers.
+    4. Return the keywords as a comma-separated list (no bullet points or full sentences).
+    5. Maintain a balance—return between 3 and 8 relevant keywords.
+    6. If the query is vague or generic, extract the most probable core topics.
+
+    Query: {query}
+
+  expected_output: >
+    A clean, comma-separated list of relevant keywords extracted from the input query.
+
+    Do NOT:
+    - Rephrase or summarize the original query.
+    - Output full sentences or explanations.
+    - Include "Keywords:" or similar labels.
+    - Include more than 8 or fewer than 3 keywords.
+
+    Only return the final keyword string, optimized for direct use in a search query or API request.
+
+  agent: keyword_extractor_agent
