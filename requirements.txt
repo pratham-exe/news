@@ -1,4 +1,4 @@
-"fastapi[standard]"
+fastapi[standard]
 streamlit
 requests
 python-dotenv
@@ -6,4 +6,3 @@ gtts
 whisper
 crewai
 pillow
-yaml 

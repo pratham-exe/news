@@ -87,10 +87,10 @@ same = n,Hangup()
 
 - Call the configured SIP extension.
 - Interact with the agent using your voice:
-- Choose category or query news.
-- Listen to headlines (with pauses and numbering).
-- Say a number to get more details.
-- Say "back" to return to the main menu.
+  - Choose category or query news.
+  - Listen to headlines (with pauses and numbering).
+  - Say a number to get more details.
+  - Say "back" to return to the main menu.
 
 ## How It Works
 
