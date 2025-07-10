@@ -34,7 +34,10 @@ def get_category_top_headlines(requested_category):
 @app.post("/get-query-news/{user_query}")
 def get_user_query_top_headlines(user_query):
     query_output = []
-    encoded_query = urllib.parse.quote_plus(user_query)
+    keyword_crew = news_agent_crew().crew_keyword
+    keywords = keyword_crew().kickoff(inputs={"query": user_query})
+    encoded_query = urllib.parse.quote_plus(keywords.raw)
+    print(keywords.raw)
     url = f"https://newsapi.org/v2/everything?language=en&q={encoded_query}&apiKey={news_api_key}"
     query_top_headlines = rq.get(url).json()
     articles_from_query = query_top_headlines.get("articles")
@@ -52,10 +55,10 @@ def get_user_query_top_headlines(user_query):
 
 @app.post("/get-detailed-explanation/{read_more}")
 def get_detailed_explanation_crew_ai(read_more):
-    crew_test = news_agent_crew().crew
+    explainer_crew = news_agent_crew().crew_explainer
     article = category_news.get(read_more) or query_news.get(read_more)
     if not article:
-        result = crew_test().kickoff(
+        result = explainer_crew().kickoff(
             inputs={
                 "title": read_more,
                 "description": "No description available",
@@ -64,7 +67,7 @@ def get_detailed_explanation_crew_ai(read_more):
         )
         return [result.raw]
     title, description, content, image_url = article
-    result = crew_test().kickoff(
+    result = explainer_crew().kickoff(
         inputs={
             "title": title,
             "description": description,

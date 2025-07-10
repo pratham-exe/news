@@ -32,6 +32,13 @@ class news_agent_crew:
             llm=self.llm_config,
         )
 
+    @agent
+    def keyword_extractor_agent(self) -> Agent:
+        return Agent(
+            config=self.agents_config["keyword_extractor_agent"],
+            llm=self.llm_config,
+        )
+
     @task
     def explainer_task(self) -> Task:
         return Task(
@@ -39,10 +46,25 @@ class news_agent_crew:
             llm=self.llm_config,
         )
 
+    @task
+    def keyword_extractor_task(self) -> Task:
+        return Task(
+            config=self.tasks_config["keyword_extractor_task"],
+            llm=self.llm_config,
+        )
+
     @crew
-    def crew(self) -> Crew:
+    def crew_explainer(self) -> Crew:
         return Crew(
             agents=[self.explainer_agent()],
             tasks=[self.explainer_task()],
+            verbose=False,
+        )
+
+    @crew
+    def crew_keyword(self) -> Crew:
+        return Crew(
+            agents=[self.keyword_extractor_agent()],
+            tasks=[self.keyword_extractor_task()],
             verbose=False,
         )

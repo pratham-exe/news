@@ -128,7 +128,7 @@ def main():
     synthesize_and_play("Welcome to the News Reporter Agent")
 
     while True:
-        user_choice = record_and_transcribe("Please say 'category' or 'query'.")
+        user_choice = record_and_transcribe("'Category' or 'Query News'.")
         log(user_choice)
         if not user_choice or "exit" in user_choice:
             synthesize_and_play("Thank you for calling. Goodbye.")
@@ -136,7 +136,7 @@ def main():
 
         if "category" in user_choice:
             synthesize_and_play(
-                "Please say a news category: Business, Entertainment, General, Health, Science, Sports, or Technology."
+                "Please choose a news category: Business, Entertainment, General, Health, Science, Sports, or Technology."
             )
             cat_resp = record_and_transcribe("Say the category.")
             log(cat_resp)
@@ -154,16 +154,14 @@ def main():
         elif "query" in user_choice:
             synthesize_and_play("Please say your news query.")
             query_resp = record_and_transcribe("Say your query.")
-            keywords = query_resp
-            headlines = fetch_query_news(keywords)
+            log(query_resp)
+            headlines = fetch_query_news(query_resp)
             if not headlines:
                 synthesize_and_play(f"No news found for your query.")
                 continue
 
         else:
-            synthesize_and_play(
-                "Sorry, I didn't understand. Please say 'category' or 'query'."
-            )
+            synthesize_and_play("Sorry, I didn't understand")
             continue
 
         i = 0
@@ -173,10 +171,10 @@ def main():
                 synthesize_and_play(f"Number {idx+1}. {title}")
                 agi_commands("WAIT FOR DIGIT 1000")
             synthesize_and_play(
-                "You can say the number for more details, say the title, 'next' to hear more headlines, 'back' or 'other news' to return to the main menu, or 'exit' to end."
+                "You can say the number for more details, 'next' to hear more headlines, 'back' to return to the main menu, or 'exit' to end."
             )
             user_action = record_and_transcribe(
-                "Say the number, title, 'next', 'back', 'other news', or 'exit'."
+                "Say the number, 'next', 'back', or 'exit'."
             )
             log(user_action)
             if not user_action or "exit" in user_action:
@@ -184,7 +182,7 @@ def main():
                 agi_commands('STREAM FILE goodbye ""')
                 agi_commands("HANGUP")
                 return
-            if "back" in user_action or "other news" in user_action:
+            if "back" in user_action:
                 break
             if "next" in user_action:
                 i += 4
@@ -193,22 +191,20 @@ def main():
             if selected_idx is not None and 1 <= selected_idx <= len(batch):
                 matched = batch[selected_idx - 1]
             else:
-                matched = next((t for t in batch if user_action in t.lower()), None)
+                matched = None
             if matched:
                 details = fetch_details(matched)
                 synthesize_and_play(details)
                 synthesize_and_play(
-                    "Would you like to hear more headlines from this topic? Say 'yes' to continue, 'back' or 'other news' to return to the main menu, or 'no' or 'exit' to end."
+                    "Would you like to hear more headlines from this topic? Say 'yes' to continue, 'back' to return to the main menu, or 'exit' to end."
                 )
-                more = record_and_transcribe(
-                    "Say 'yes', 'back', 'other news', 'no', or 'exit'."
-                )
+                more = record_and_transcribe("Say 'yes', 'back', or 'exit'.")
                 log(more)
                 if more:
                     if "yes" in more:
                         i += 4
                         continue
-                    elif "back" in more or "other news" in more:
+                    elif "back" in more:
                         break
                     else:
                         synthesize_and_play("Thank you for calling. Goodbye.")
