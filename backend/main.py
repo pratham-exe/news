@@ -20,7 +20,6 @@ def get_category_top_headlines(requested_category):
     url = f"https://newsapi.org/v2/top-headlines?category={requested_category}&apiKey={news_api_key}"
     category_top_headlines = rq.get(url).json()
     articles_from_category = category_top_headlines.get("articles")
-    articles_from_category = articles_from_category[:10]
     for each in articles_from_category:
         title = each.get("title")
         description = each.get("description")
@@ -39,7 +38,6 @@ def get_user_query_top_headlines(user_query):
     url = f"https://newsapi.org/v2/everything?language=en&q={encoded_query}&apiKey={news_api_key}"
     query_top_headlines = rq.get(url).json()
     articles_from_query = query_top_headlines.get("articles")
-    articles_from_query = articles_from_query[:10]
     for each in articles_from_query:
         title = each.get("title")
         description = each.get("description")

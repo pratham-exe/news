@@ -30,6 +30,8 @@ with categories:
                 f"http://localhost:8000/get-category-news/{category}"
             )
             category_top_headlines = json.loads(category_news.content.decode("utf-8"))
+            print(len(category_top_headlines))
+            category_top_headlines = category_top_headlines[:10]
             for each in category_top_headlines:
                 st.subheader(each)
                 with st.expander("Read more"):
@@ -56,6 +58,8 @@ with user_query:
                 f"http://localhost:8000/get-query-news/{user_query_news}"
             )
             query_top_headlines = json.loads(query_news.content.decode("utf-8"))
+            print(len(query_top_headlines))
+            query_top_headlines = query_top_headlines[:10]
             for each in query_top_headlines:
                 st.subheader(each)
                 with st.expander("Read more"):
